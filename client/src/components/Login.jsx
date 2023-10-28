@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -16,15 +17,20 @@ const initialValues = {
 };
 
 const Login = () => {
-  const [show, setShow] = useState(false);
-  const handleSubmit = (values) => {
+  const [show, setShow] = useState(true);
+  const navigate = useNavigate("");
+
+  const handleSubmit = (values, { resetForm }) => {
     // You can handle the form submission here (e.g., sending a request to your server).
     console.log("Form values:", values);
+    setTimeout(() => {
+      resetForm();
+    }, 1000);
   };
   return (
     <div className="w-11/12 md:w-1/3 mx-auto mt-[100px] border border-gray-100 flex-col shadow-lg shadow-gray-300 p-6">
       <h1 className="text-xl md:text-2xl text-gray-600 font-bold text-center uppercase mb-6">
-        Login
+        Sign In
       </h1>
       <Formik
         initialValues={initialValues}
@@ -64,7 +70,7 @@ const Login = () => {
             </label>
             <div className="w-full border border-gray-300 rounded-lg flex justify-between">
               <Field
-                type={show === true ? "text" : "password"}
+                type={show === true ? "password" : "text"}
                 id="password"
                 name="password"
                 placeholder="Enter your password"
@@ -75,9 +81,9 @@ const Login = () => {
                 onClick={() => setShow(!show)}
               >
                 {show === true ? (
-                  <BsEyeFill className="text-[25px] text-gray-500 cursor-pointer" />
+                  <BsEyeFill className="text-[21px] md:text-[25px] text-gray-500 cursor-pointer" />
                 ) : (
-                  <BsEyeSlashFill className="text-[25px] text-gray-500 cursor-pointer" />
+                  <BsEyeSlashFill className="text-[21px] md:text-[25px] text-gray-500 cursor-pointer" />
                 )}
               </span>
             </div>
@@ -97,7 +103,10 @@ const Login = () => {
           </button>
           <p className="text-center text-gray-500 mt-4">
             Don't have an account?{" "}
-            <span className="text-teal-500 hover:underline cursor-pointer">
+            <span
+              className="text-teal-500 hover:underline cursor-pointer"
+              onClick={() => navigate("/sign-up")}
+            >
               Sign Up
             </span>
           </p>

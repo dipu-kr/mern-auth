@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate("");
   return (
     <header className="w-full bg-teal-600 px-4 md:px-0">
       <div className="max-w-7xl h-[70px] m-auto flex justify-between items-center">
@@ -8,8 +10,18 @@ const Header = () => {
           mern auth
         </h1>
         <ul className="block flex gap-8 text-white capitalize">
-          <li className="list-none cursor-pointer hover:underline">sign up</li>
-          <li className="list-none cursor-pointer hover:underline">sign in</li>
+          <li
+            className="list-none cursor-pointer hover:underline"
+            onClick={() => navigate("/sign-up")}
+          >
+            sign up
+          </li>
+          <li
+            className="list-none cursor-pointer hover:underline"
+            onClick={() => navigate("/")}
+          >
+            sign in
+          </li>
         </ul>
       </div>
     </header>
