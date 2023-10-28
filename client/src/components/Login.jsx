@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -15,6 +16,7 @@ const initialValues = {
 };
 
 const Login = () => {
+  const [show, setShow] = useState(false);
   const handleSubmit = (values) => {
     // You can handle the form submission here (e.g., sending a request to your server).
     console.log("Form values:", values);
@@ -43,7 +45,7 @@ const Login = () => {
               id="email"
               name="email"
               placeholder="Enter your email"
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-teal-300 focus:border-teal-300"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none"
             />
 
             <ErrorMessage
@@ -60,15 +62,24 @@ const Login = () => {
             >
               Password
             </label>
-            <div className="w-full border rounded-lg focus:outline-none focus:ring focus:ring-teal-300 focus:border-teal-300">
+            <div className="w-full border border-gray-300 rounded-lg flex justify-between">
               <Field
-                type="password"
+                type={show === true ? "text" : "password"}
                 id="password"
                 name="password"
                 placeholder="Enter your password"
-                className="w-[90%] px-3 py-2"
+                className="w-[88%] px-3 py-2 border-none focus:outline-none rounded-lg"
               />
-              <span className="w-[10%]">show</span>
+              <span
+                className="w-[12%] bg-gray-100 py-2 flex justify-center items-center rounded-r-lg"
+                onClick={() => setShow(!show)}
+              >
+                {show === true ? (
+                  <BsEyeFill className="text-[25px] text-gray-500 cursor-pointer" />
+                ) : (
+                  <BsEyeSlashFill className="text-[25px] text-gray-500 cursor-pointer" />
+                )}
+              </span>
             </div>
 
             <ErrorMessage
