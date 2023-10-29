@@ -21,10 +21,26 @@ const Register = () => {
   const [show, setShow] = useState(true);
   const navigate = useNavigate("");
 
-  const handleSubmit = (values) => {
-    // You can handle the form submission here (e.g., sending a request to your server).
-    console.log("Form values:", values);
+  const handleSubmit = async (values) => {
+    console.log("hello");
+    const { username, email, password } = values;
+    const response = await fetch("http://localhost:8000/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        email,
+        password,
+      }),
+    });
+
+    const data = await response.json();
+    console.log(data);
+    console.log("submitted");
   };
+
   return (
     <div className="w-11/12 md:w-1/3 mx-auto mt-[100px] border border-gray-100 flex-col shadow-lg shadow-gray-300 p-6">
       <h1 className="text-xl md:text-2xl text-gray-600 font-bold text-center uppercase mb-6">
