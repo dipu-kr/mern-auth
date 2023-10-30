@@ -3,6 +3,7 @@ import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required("User name is required"),
@@ -21,10 +22,9 @@ const Register = () => {
   const [show, setShow] = useState(true);
   const navigate = useNavigate("");
 
-  const handleSubmit = async (values) => {
-    console.log("hello");
+  const handleSubmit = async (values, { resetForm }) => {
     const { username, email, password } = values;
-    const response = await fetch("http://localhost:8000/register", {
+    const response = await fetch("http://localhost:8080/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,8 +37,14 @@ const Register = () => {
     });
 
     const data = await response.json();
+    if (data.status === 201) {
+      toast.success("User Registration done ", {
+        duration: 3000,
+        position: "top-center",
+      });
+      resetForm();
+    }
     console.log(data);
-    console.log("submitted");
   };
 
   return (
@@ -140,7 +146,7 @@ const Register = () => {
           <p className="text-center text-gray-500 mt-4">
             Already have an account?{" "}
             <span
-              className="text-teal-500 hover:underline cursor-pointer"
+              className="text-teal-500 underline underline-offset-2 cursor-pointer"
               onClick={() => navigate("/")}
             >
               Sign In
@@ -148,6 +154,7 @@ const Register = () => {
           </p>
         </Form>
       </Formik>
+      <Toaster />
     </div>
   );
 };

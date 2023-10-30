@@ -20,12 +20,29 @@ const Login = () => {
   const [show, setShow] = useState(true);
   const navigate = useNavigate("");
 
-  const handleSubmit = (values, { resetForm }) => {
-    // You can handle the form submission here (e.g., sending a request to your server).
-    console.log("Form values:", values);
-    setTimeout(() => {
+  const handleSubmit = async (values, { resetForm }) => {
+    const { email, password } = values;
+    const response = await fetch("http://localhost:8080/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    const data = await response.json();
+    // console.log(data);
+    if (data.status === 201) {
+      localStorage.setItem("userToken", data.result.token);
+      // toast.success("User login done ", {
+      //   duration: 3000,
+      //   position: "top-center",
+      // });
       resetForm();
-    }, 1000);
+    }
   };
   return (
     <div className="w-11/12 md:w-1/3 mx-auto mt-[100px] border border-gray-100 flex-col shadow-lg shadow-gray-300 p-6">
@@ -104,7 +121,7 @@ const Login = () => {
           <p className="text-center text-gray-500 mt-4">
             Don't have an account?{" "}
             <span
-              className="text-teal-500 hover:underline cursor-pointer"
+              className="text-teal-500 underline underline-offset-2 cursor-pointer"
               onClick={() => navigate("/sign-up")}
             >
               Sign Up
