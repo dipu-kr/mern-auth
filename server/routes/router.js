@@ -2,6 +2,7 @@ const express = require("express");
 const router = new express.Router();
 const userdb = require("../models/userSchema");
 const bcrypt = require("bcryptjs");
+const authenticate = require("../middleware/authenticate.js");
 
 // -------user registration---------
 router.post("/register", async (req, res) => {
@@ -43,7 +44,7 @@ router.post("/login", async (req, res) => {
       if (!isMatch) {
         res.status(422).json({ error: "Invalid details" });
       } else {
-        // token generate
+        // token generate inside userSchema file
         const token = await userValid.generateAuthtoken();
 
         // cookie genrate
@@ -59,7 +60,22 @@ router.post("/login", async (req, res) => {
         res.status(201).json({ status: 201, result });
       }
     }
-  } catch (error) {}
+  } catch (error) {
+    res.status(422).json(error);
+    console.log(error);
+  }
+});
+
+// --------------user validation----------------
+// router.use(authenticate);
+
+router.get("/validuser", authenticate, async (req, res) => {
+  try {
+    const validUserOne = await userdb.findOne({ _id: req.userId });
+    res.status(201).json({status:201,data:validUserOne})
+  } catch (error) {
+    res.status(401).json({status:401,error})
+  }
 });
 
 module.exports = router;

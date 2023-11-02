@@ -3,6 +3,8 @@ import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
+
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -37,11 +39,14 @@ const Login = () => {
     // console.log(data);
     if (data.status === 201) {
       localStorage.setItem("userToken", data.result.token);
-      // toast.success("User login done ", {
-      //   duration: 3000,
-      //   position: "top-center",
-      // });
       resetForm();
+      toast.success("User login done ", {
+        duration: 3000,
+        position: "top-center",
+      });
+      navigate("/dash")
+    }else{
+      navigate("/")
     }
   };
   return (
@@ -129,6 +134,7 @@ const Login = () => {
           </p>
         </Form>
       </Formik>
+      <Toaster/>
     </div>
   );
 };

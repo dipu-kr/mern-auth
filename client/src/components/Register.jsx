@@ -43,8 +43,9 @@ const Register = () => {
         position: "top-center",
       });
       resetForm();
+      navigate("/")
     }
-    console.log(data);
+    // console.log(data);
   };
 
   return (
